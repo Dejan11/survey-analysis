@@ -1247,12 +1247,23 @@ title(main = "Извор: Асоцијација алумниста Балкан
 
 ##problem na gostujucem
 
-mentor_contact =as.character(upitnik_filtered$kontakt_s_mentorom)
+mentor_contact =as.character(anketa_procisceno$kontakt_s_mentorom[anketa_procisceno$nivoStudija1=="doktorske studije" |
+                                                                                       anketa_procisceno$nivoStudija2=="doktorske studije" |
+                                                                                       anketa_procisceno$nivoStudija3=="doktorske studije" |
+                                                                                       anketa_procisceno$nivoStudija1=="post-doktorske studije" |
+                                                                                       anketa_procisceno$nivoStudija2=="post-doktorske studije" |
+                                                                                       anketa_procisceno$nivoStudija3=="post-doktorske studije" | 
+                                                                                       anketa_procisceno$nivoStudija1=="istraživanje" |
+                                                                                       anketa_procisceno$nivoStudija2=="istraživanje" |
+                                                                                       anketa_procisceno$nivoStudija3=="istraživanje" |
+                                                                                       anketa_procisceno$nivoStudija1=="trening" |
+                                                                                       anketa_procisceno$nivoStudija2=="trening" |
+                                                                                       anketa_procisceno$nivoStudija3=="trening"])
 
 mentor_contact = as.data.frame(table(mentor_contact))
 mentor_contact_=edit(mentor_contact)
 mentor_contact_=mentor_contact_[-c(1),]
-View(mentor_contact_)
+#View(mentor_contact_)
 slices = mentor_contact_$Freq
 lbls = ""
 lbls = mentor_contact_$Var1
@@ -1267,8 +1278,8 @@ broj = sum(mentor_contact_$Freq)
 pie3D(slices,edges=NA,radius=1.1,height=0.15,theta=pi/3,start=pi/1,border=par("fg"),
       col=c("#e5e5e5","#4c4c4c"),labels=lbls,labelpos=NULL,labelcol="black",labelcex=1.2,
       sector.order=NULL,explode=0.1,shade=.75)
-title(main=paste("Да ли сте још увек у контакту са својим ментором?\n Број анкетираних ",broj), font.main=1, cex.main=1)
-title(main = "Извор: Асоцијација алумниста Балкана - Србија. Анкета студената и алумниста о мобилности, април 2018",line=-22,cex.main = .8, font.main=1)
+title(main=paste("Одржавање контакта са ментором анкетираних \nca докт., пост-докт... студија. Број анкетираних ",broj), font.main=1, cex.main=1)
+title(main = "Извор: Асоцијација алумниста Балкана - Србија. \nАнкета студената и алумниста о мобилности, април 2018",line=-15,cex.main = .8, font.main=1)
 
 
 ##publikacija
@@ -1342,7 +1353,20 @@ g + geom_bar(aes(fill=publicaija), width = 0.5) +
        caption="Извор: Асоцијација алумниста са Балкана - Србија", y="Збир", x="Одговори")+coord_flip()+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                                                                                                                panel.background = element_blank(), axis.line = element_line(colour = "black"))
 ##stecena iskustva na maticni univerzitet
-stedena_iskustva =as.character(upitnik_filtered$prenoz_znanja_maticni)
+prenos_znanja_osnovne =as.character(anketa_procisceno$prenoz_znanja_maticni[anketa_procisceno$nivoStudija1=="osnovne studije"])
+prenos_znanja_master =as.character(anketa_procisceno$prenoz_znanja_maticni[anketa_procisceno$nivoStudija1=="master studije" |
+                                                                            anketa_procisceno$nivoStudija2=="master studije" |
+                                                                             anketa_procisceno$nivoStudija3=="master studije"])
+                                                                             
+prenos_znanja_ostalo = as.character(anketa_procisceno$prenoz_znanja_maticni[anketa_procisceno$nivoStudija1!="osnovne studije" &
+                                                                              anketa_procisceno$nivoStudija1!="master studije" &
+                                                                              anketa_procisceno$nivoStudija2!="master studije" &
+                                                                              anketa_procisceno$nivoStudija3!="master studije" &
+                                                                              anketa_procisceno$nivoStudija2!="osnovne studije" &
+                                                                              anketa_procisceno$nivoStudija3!="osnovne studije"])
+                                                                                                                                                     
+
+stedena_iskustva = prenos_znanja_ostalo
 
 stedena_iskustva = as.data.frame(table(stedena_iskustva))
 stedena_iskustva_=edit(stedena_iskustva)
@@ -1360,10 +1384,10 @@ lbls = paste(lbls,"%")
 lbls = paste(lbls,")")
 
 pie3D(slices,edges=NA,radius=1.1,height=0.15,theta=pi/3,start=pi/1,border=par("fg"),
-      col=c("lightblue","red"),labels=lbls,labelpos=NULL,labelcol="black",labelcex=1.2,
+      col=c("#e5e5e5","#4c4c4c"),labels=lbls,labelpos=NULL,labelcol="black",labelcex=1.2,
       sector.order=NULL,explode=0,shade=.75)
-title(main=paste("Да ли сте имали шансу да стечена искуства пренесете на Ваш матични универзитет?\n Број анкетираних ",broj), font.main=1, cex.main=1)
-title(main = "Извор: Асоцијација алумниста Балкана - Србија. Анкета студената и алумниста о мобилности, април 2018",line=-17,cex.main = .8, font.main=1)
+title(main=paste("Пренос знања на матични универзитет - докторске/постдокторске/\n тренинг/истраживање. Број анкетираних ",broj), font.main=1, cex.main=1)
+title(main = "Извор: Асоцијација алумниста Балкана - Србија.\nАнкета студената и алумниста о мобилности, април 2018",line=-15,cex.main = .8, font.main=1)
 
 bsc_msc_phd = c(as.character(anketa_procisceno$nivoStudija1),as.character(anketa_procisceno$nivoStudija2),as.character(anketa_procisceno$nivoStudija3))
 iskustva = c(as.character(anketa_procisceno$prenoz_znanja_maticni),as.character(anketa_procisceno$prenoz_znanja_maticni),as.character(anketa_procisceno$prenoz_znanja_maticni))
